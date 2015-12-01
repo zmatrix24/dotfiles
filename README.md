@@ -13,5 +13,5 @@ In it you will find the following files
 
 Notice  .my_bureau.zsh-theme needed to be put in .oh-my-zsh/theme to make .zshrc work  
 
-To update the backup use the following alias: dotbak
+To update the backup use the following alias: dotbak  
 To git push use the following alias: autopush
