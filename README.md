@@ -1,5 +1,4 @@
 # dotfiles
-# dotfiles
 
 
 This folder is a backup of the current important dot files. 
@@ -11,6 +10,5 @@ In it you will find the following files
 .zshrc.bak: a zsh configuarion backup
 .bashrc.bak: a bash configuarion backup
 .bash_profile.bak: a bash profile backup
-
 
 To update the backup use the following alias: dotbak
