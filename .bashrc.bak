@@ -1,0 +1,10 @@
+# set up terminal window display
+# http://apple.stackexchange.com/questions/66611/how-to-change-computer-name-so-terminal-displays-it-in-mac-os-x-mountain-lion
+# h = host name, w = complete path, u = username
+export TERM="screen-256color"
+PS1='\[\e[0;33m\]\u\[\e[0m\]:\$ '
+
+
+#source ~/.bin/tmuxinator.bash
+
+#export PATH=/usr/local/bin/:$PATH

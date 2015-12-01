@@ -1,0 +1,544 @@
+"--------------------------------------**--------------------------------------#
+"  File Name: /Users/user/.vimrc
+"  Purpose: The .vimrc file loads at when vim is activated. 
+"  Creation Date: 14-05-2012
+"  Last Modified: Wed May 16 23:03:14 2012
+"  Created By: Ian Mouzon <imouzon@iastate.edu>
+"--------------------------------------**--------------------------------------#
+
+"--------------------------------------**--------------------------------------
+"  vim-init
+"  change how vim behaves (these settings do not depend on plugins 
+
+   "use vim settings not vi settings (required for Bundle)
+   set nocompatible               
+
+   "required for vundle
+   filetype off
+
+"--------------------------------------**--------------------------------------#
+"   vundle-init
+"   This section sets up vundle to initialize packages 
+"   https://github.com/gmarik/Vundle.vim
+
+   "set the runtime path to include Vundle at initialization
+   set rtp+=~/.vim/bundle/Vundle.vim/ 
+   call vundle#begin()
+"------------------------------------------------------------------------------#
+
+
+"--------------------------------------**--------------------------------------#
+"   vundle-load
+"   This section tells vundle where to update packages from
+"   and which packages to load
+
+   "let Vundle manage vundle (required for vundle to work)
+"   Plugin 'gmarik/vundle'
+   
+   Plugin 'VundleVim/Vundle.vim'   
+
+   "from the vim-scripts github
+   Plugin 'Colour-Sampler-Pack'
+   Plugin 'tcomment'
+
+   "from personal github pages
+   Plugin 'jalvesaq/R-Vim-runtime'
+   Plugin 'jcfaria/Vim-R-plugin'
+   Plugin 'ervandew/supertab'
+   Plugin 'Valloric/YouCompleteMe'
+   Plugin 'SirVer/ultisnips'
+   Plugin 'honza/vim-snippets'
+   Plugin 'sjl/gundo.vim'
+   Plugin 'sjl/vitality.vim'
+   Plugin 'imouzon/vimPersonal'
+   Plugin 'bling/vim-airline'
+   Plugin 'scrooloose/syntastic'
+   "Plugin 'LaTeX-Box-Team/LaTeX-Box'
+   Plugin 'marcweber/vim-addon-mw-utils'
+   Plugin 'panozzaj/vim-autocorrect'
+   Plugin 'plasticboy/vim-markdown'
+   Plugin 'scrooloose/nerdtree'
+   Plugin 'tomtom/tlib_vim'
+   Plugin 'tsaleh/vim-shoulda'
+   Plugin 'vim-ruby/vim-ruby'
+   Plugin 'junegunn/vim-easy-align'
+   Plugin 'tpope/vim-abolish'
+   Plugin 'tpope/vim-cucumber'
+   Plugin 'tpope/vim-fugitive'
+   Plugin 'tpope/vim-git'
+   Plugin 'tpope/vim-haml'
+   Plugin 'tpope/vim-rails'
+   Plugin 'tpope/vim-repeat'
+   Plugin 'tpope/vim-sensible'
+   Plugin 'tpope/vim-surround'
+   Plugin 'tpope/vim-vividchalk'
+   Plugin 'maverickg/stan.vim'
+   Plugin 'marijnh/tern_for_vim'
+   Plugin 'jelera/vim-javascript-syntax'
+   Plugin 'imouzon/iliketowatch'
+   Plugin 'applescript.vim'
+   "Plugin 'jpalardy/vim-slime'
+   "Plugin 'ervandew/screen'
+   Plugin 'noah/vim256-color'
+   Plugin 'altercation/vim-colors-solarized'
+   Plugin 'majutsushi/tagbar'
+   Plugin 'kien/ctrlp.vim'
+
+   call vundle#end()
+
+   "Bundle 'EricGebhart/SAS-vim'
+   "Bundle 'garbas/vim-snipmate'                  "using ultisnips now
+   "Bundle 'Align'                                "using vim-easy-align now
+   "Bundle 'klen/python-mode'
+   "Bundle 'ivanov/ipython'
+   "Bundle 'maverickg/stan'
+"------------------------------------------------------------------------------#
+
+"--------------------------------------**--------------------------------------#
+"   plugin-behavior
+"   This section sets plugin specific variables and describes plugin
+"   dependencies and other plugin stuff
+
+"--Vim-R-plugin
+   "To use vim_r_plugin these packages need to be installed in R
+   "     install.packages(c('vimcom', 'colorout', 'setwidth'))
+   
+   "open R with current file directory as working directory
+   let vimrplugin_vim_wd = 1
+
+   "do not convert _ to <- 
+   let vimrplugin_assign = 0
+
+   "do not convert "<" to "<<>>=\n@" in rnoweb files
+   let vimrplugin_rnowebchunk = 0
+
+   "start R with an external terminal emulator instead of the GUI
+   let vimrplugin_applescript = 0
+
+   "use iterm2 instead of term
+   "let vimrplugin_term='iTerm'
+
+   "use your personal .tmux.conf file (if = 0, virmplugin writes its own)
+   let vimrplugin_notmuxconf = 0
+
+   "start with syntax highlighting and support for the following
+   "let vimrplugin_start_libs="basf,stats,graphics,grDevices,utils,methods"
+
+   "allow vimrplugin to open pdfs after they get compiled
+   let vimrplugin_openpdf=1
+   let vimrplugin_pdfviewer = "skim"
+
+   "for when vim is started inside a tmux session
+   if !has('gui_running')
+      let vimrplugin_vsplit = 1   "for horizontal split = 0, vert split = 1 (default is 0)
+      let vimrplugin_rconsole_width = 45
+      let vimrplugin_rconsole_height = 20 
+   endif
+ 
+   "Remap keys for R: now send commands with space bar!
+   "vmap <Space> <Plug>RdSendSelection
+   "nmap <Space> <Plug>RDSendLine
+
+   "add code highlighting to chunk headers
+   let rrst_syn_hl_chunk = 1
+   let rmd_syn_hl_chunk = 1
+
+   "add the same behavior to python, julia, haskell, ruby, lisp
+   runtime r-plugin/global_r_plugin.vim
+
+   "vmap <Space> <Plug>RDSendSelection
+   "nmap <Space> <Plug>RDSendLine
+   "nmap <LocalLeader>c <Plug>RToggleComment
+   "vmap <LocalLeader>c <Plug>RToggleComment
+   "map <LocalLeader>nr :call RAction("rownames")<CR>
+   "map <LocalLeader>nc :call RAction("colnames")<CR>
+   map <LocalLeader>nn :call RAction("names")<CR>
+   "map <LocalLeader>nD :call RAction("dimnames")<CR>
+   map <LocalLeader>nd :call RAction("dim")<CR>
+   map <LocalLeader>nh :call RAction("head")<CR>
+   "map <LocalLeader>nt :call RAction("tail")<CR>
+   "map <LocalLeader>nl :call RAction("length")<CR>
+   "map <LocalLeader>ns :call RAction("str")<CR>
+   "map <LocalLeader>nC :call RAction("class")<CR>
+   "map <LocalLeader>nm :call RAction("mode")<CR>
+   map <LocalLeader>nw :call SendCmdToR("system('clear')")<CR>
+   "map <LocalLeader>ne :call SendCmdToR("system('traceback()')")<CR>
+   "map <LocalLeader>sb :call SendCmdToR("system.time({")<CR>
+   "map <LocalLeader>se :call SendCmdToR("})")<CR>
+   "map <LocalLeader>tt :call SendCmdToR("tt = ")<CR>
+   map <LocalLeader>rm :call SendCmdToR("rm(list=ls())")<CR>
+   "map <LocalLeader>ls :call SendCmdToR("ls()")<CR>
+   "map <LocalLeader>qy :call SendCmdToR("q(save = 'yes')")<CR>
+   "map <LocalLeader>qn :call SendCmdToR("q(save = 'no')")<CR>
+
+
+"--YouCompleteMe, Supertab, and Ultisnips
+   "make YouCompleteMe compatible with UltiSnips (using supertab)
+   let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+   let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+   let g:SuperTabDefaultCompletionType = '<C-n>'
+   "better key bindings for UltiSnipsExpandTrigger
+   let g:UltiSnipsExpandTrigger="<tab>"
+   let g:UltiSnipsJumpForwardTrigger="<tab>"
+   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+   let g:UltiSnipsEditSplit="vertical"
+
+   "supposedly will fix errors when upgrading YCM
+   "let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+
+"--UltiSnips   
+   let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+   "let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/vimPersonal/doc/.ycm_extra_conf.py'
+
+"--LaTeX-Box
+   "do not use LaTeX-Box indentation
+   let g:LatexBox_custom_indent = 0
+
+   "latex in nonstop mode!
+   let g:Tex_CompileRule_pdf = 'pdflatex -interaction nonstopmode $*'
+   let g:LatexBox_latexmk_async = 0
+
+   let g:LatexBox_latexmk_options = '-pvc -pdfps'
+   let g:LatexBox_latexmk_preview_continuously = 0
+   let g:LatexBox_viewer = "open -a Skim"
+
+   "dont let the quick fix window steal the cursor
+   let g:LatexBox_quickfix = 2 
+ 
+   "IMPORTANT: LaTeX behavior 
+      "show all files searched by TeX: 
+      "   r !kpsepath tex | tr : '\n'
+      "LaTeX package directory
+      "   /opt/local/share/texmf-texlive-dist/tex/latex/
+      "update latex path
+      "   texhash
+ 
+"--VimPersonal
+   "Set ColorTheme for Dark and Light
+   so ~/.vim/bundle/vimPersonal/plugin/vim_color_functions.vim
+   Colordark
+   "Colorlight
+
+   "Set which packages get loaded automatically after Focus is first lost
+   "let g:LosingFocusPackages = [["AutoCorrect"], ["MyAutoCorrect"]]
+   let g:LosingFocusPackages = [["AutoCorrect"]]
+
+"--iliketowatch
+   let g:iliketowatch_browser = "canary"
+
+"--airline
+   let g:airline#extensions#tabline#enabled = 1
+   let g:airline_powerline_fonts=1
+   "light themes: kalisi, luna, monochrome, serene, tomorrow, understated, 
+   "darker themes: badwolf, dark, durant, jellybeans, zenburn 
+   let g:airline_theme = 'kalisi'
+
+   "an empty list disables all extensions (plugins must opt-in)
+   let g:airline_extensions = ['syntastic', 'tagbar']
+
+"--Syntastic and airline
+   let g:airline#extensions#syntastic#enabled = 1
+   "let g:airline#extensions#eclim#enabled = 1
+
+"--NERDtree
+   map <leader>n :NERDTreeToggle<CR>
+
+"--Syntastic 
+   "if not using airline need these commands
+   "set statusline+=%#warningmsg#
+   "set statusline+=%{SyntasticStatuslineFlag()}
+   "set statusline+=%*
+
+   let g:syntastic_always_populate_loc_list = 1
+   let g:syntastic_auto_loc_list = 1
+   let g:syntastic_loc_list_height = 5
+   let g:syntastic_check_on_open = 1
+   let g:syntastic_check_on_wq = 0
+   
+   "reset the error list when we leave the window
+   "au WinLeave * :SyntasticReset
+
+   "javascript
+   let g:syntastic_javascript_checkers = ['eslint']
+   
+"--TagBar
+   "run usefulR:::makeRtags() to create R tags file in bundle/vimPersonal
+   nmap <F8> :TagbarToggle<CR>
+
+   "autocmd FileType r set tags+=~/.vim/bundle/vimPersonal/tags/RTAGS,~/.vim/bundle/vimPersonal/tags/RsrcTags
+   "autocmd FileType rnoweb set tags+=~/.vim/bundle/vimPersonal/tags/RTAGS,~/.vim/bundle/vimPersonal/tags/RsrcTags
+   
+   "let g:tagbar_type_r = {
+   "    \ 'ctagstype' : 'r',
+   "    \ 'kinds'     : [
+   "        \ 'f:Functions',
+   "        \ 'g:GlobalVariables',
+   "        \ 'v:FunctionVariables'
+   "    \ ]
+   "\}
+
+"-------------------------------------------------------------------------------
+
+
+"--------------------------------------**--------------------------------------#
+"  vim-func
+"  personal vim functions that have not yet been put in VimPersonal
+"  or are too specific to be added (for instance, referencing file locations)
+"  organized by programming language
+
+"--LaTeX
+   "compilation tools
+   command! PygFile !pdflatex -shell-escape %
+
+"--HTML
+   
+
+"--R
+   command! KnitHTML !R --no-save --no-restore -e "require(knitr); knit2html('%')"
+   command! KnitMD !R --no-save --no-restore -e "setwd(\""%:p:h"\"); rmarkdown::render('%')";
+
+"--- FORTRAN and C in R
+   "so ~/.vim/bundle/vimPersonal/plugin/GiveR.vim
+
+"--python
+
+"--FORTRAN
+   "au BufNewFile, BufRead *.f,*.for setf fortran
+   "let do_syntax_sel_menu = 1|runtime! synmenu.vim|aunmenu &Syntax.&Show\ filetypes\ in\ menu
+   "set fortran_do_enddo=1
+   "let fortran_fold=1
+   "let fortran_fold_conditionals=1
+   "let fortran_fold_mulilinecomments=1
+   "fortran_codecomplete.vim is giving terminal vi problems
+   "so ~/.vim/ftplugin/fortran_codecomplete.vim
+   "so ~/.vim/ftplugin/fortran_stubs.vim
+   "autocmd FileType python set omnifunc=pythoncomplete#Complete
+   
+"--Applescript
+   "AppleScript syntax
+   au BufRead,BufNewFile *.scrp,*.as set filetype=applescript
+
+"--PDF
+   "Read text from pdf files with command Rpdf
+   command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
+
+"--blogging
+   "so ~/.vim/bundle/vimPersonal/plugin/blogging.functions.vim
+   
+"--RNW
+   "knit a document in full detaild to catch errors better
+
+   "disable indenting
+   function! DisableIndent()
+      set autoindent&
+      set cindent&
+      set smartindent&
+      set indentexpr&
+   endfunction
+
+   "autocmd filetype rnoweb call DisableIndent()
+   
+   "autocmd FileType rnoweb filetype indent off
+"------------------------------------------------------------------------------#
+
+
+"--------------------------------------**--------------------------------------#
+"  vim-behavior
+"  change how vim behaves (these settings do not depend on plugins 
+
+   "The font I like to use in MacVim is Menlo Regular 11 pt
+    set guifont=Menlo:h11
+   
+   "REQUIRED for packages that change environment based on filetype
+    syntax on
+    filetype plugin indent on
+
+   "Add syntax files for certain types of code
+    syntax enable
+
+   "Automatically enable mouse usage
+    set mouse=a
+
+   "minimize toolbar
+    set guioptions-=T
+
+   "remove side scroll
+    set guioptions-=r
+
+   "Move Cursor past last character
+   "set virtualedit=onemore
+
+   "Abbreviate messages to avoid hitting 'ENTER'
+    set shortmess+=filmnrxoOtT
+   
+   "Spell checking ON
+    set spell         
+
+   "Spell checking OFF
+    set nospell
+
+   "Increase command history
+    set history=400
+
+   "Add column numbers, add relative line numbering
+    set number
+
+   "when focus is lost, turn off realtive number
+    au WinEnter * :set relativenumber
+    au WinLeave * :set norelativenumber
+    au FocusLost * :set norelativenumber
+    au FocusGained * :set relativenumber
+
+   "Move swap files:
+    set directory=~/.vim/swapfiles
+    set backupdir=~/.vim/rbfiles
+  
+   "Display current mode
+    set showmode
+
+   "Show partial commands in status line and selected characters/lines in visual mode
+    set showcmd
+
+   "indent 3 spaces like I was taught in intro to C, 4 spaces is for rich people
+    set shiftwidth=3
+
+   "tabs only give 3 spaces
+    set tabstop=3
+
+   "I said spaces, not some \t thing
+    set expandtab
+
+   "make sets of 3 spaces together work like four tabs
+    set softtabstop=3
+
+   "Smart indent 
+    set autoindent
+    set smartindent
+
+   "Search highlights terms
+    set hlsearch
+    set incsearch
+    set showmatch
+
+    "No extra spaces between rows
+     set linespace=0                 
+
+    "windows can be 0 line high 
+     set winminheight=0              
+
+    "case insensitive search
+     set ignorecase                  
+
+    "case sensitive when uc present
+     set smartcase                   
+
+   "I hate wrapping text
+    set nowrap
+
+   "but I like folding text
+    set foldmethod=syntax
+   
+   "Set your grep program to always generate a file-name.
+    set grepprg=grep\ -nH\ $*
+
+"--Key bindings and key remapping
+   " To use <C- > mappings, need to add the following to .tmux.conf
+   " set-window -g xterm-keys on
+   
+   "Change leader from '\' to ','
+   "  let mapleader = ','
+
+   "Make so that ';' works just like ':'
+   nnoremap ; :
+
+   "" Easier moving in tabs and windows - windows fill screen on move
+   "    map <C-J> <C-W>j<C-W>_
+   "    map <C-K> <C-W>k<C-W>_
+   "    map <C-L> <C-W>l<C-W>_
+   "    map <C-H> <C-W>h<C-W>_
+
+   " Easier moving in tabs and windows - windows do not fill screen on move
+   map <C-J> <C-W>j
+   map <C-K> <C-W>k
+   map <C-L> <C-W>l
+   map <C-H> <C-W>h
+
+   "Yank from the cursor to the end of the line
+   nnoremap Y y\$      
+
+   "CTRL-C to copy (visual mode)
+   vnoremap <C-c> y 
+   inoremap <C-c> y\$
+   nnoremap <C-c> y\$
+
+   "CTRL-X to cut (visual mode)
+   vnoremap <C-X> x
+   
+   "CTRL-V to paste
+   inoremap <C-P> <esc>P
+   nnoremap <C-P> P
+
+   function! SafeCopy(mode)
+      if a:mode == 'visual'
+         execute "normal y"
+         execute "silent !echo ".@@." | pbcopy" 
+         execute "normal! <CR>" 
+         execute "redraw!"
+      else
+         execute "normal yy"
+         execute "silent !echo ".substitute(@@,'\n','','g')." | pbcopy" 
+         execute "normal! <CR>" 
+         execute "redraw!"
+      endif
+   endfunction
+
+   function! SafePaste()
+      execute "i"
+      execute "!pbpaste"
+      execute "normal! <CR>"
+      execute "redraw!"
+   endfunction
+
+   if exists('$TMUX')
+      nnoremap <C-C> :call SafeCopy('not visual')<CR>
+      vnoremap <C-C> <esc>:call SafeCopy('visual')<CR>
+
+      nnoremap <C-P> :call SafePaste()<CR>
+      inoremap <C-P> <esc>:call SafePaste()<CR>
+      inoremap <C-P> <esc>:call SafePaste()<CR>
+   endif
+
+   "send all deletions and yanks to the system clipboard (bad idea)
+   "set clipboard=unnamed 
+   
+   "Set GUI only options transparency
+   if has('gui_running')
+      set transparency=5
+
+      "Cursor
+      " highlight Cursor guifg=black guibg=orange
+      " highlight iCursor guifg=pink guibg=orange
+      " set guicursor=n-v-c:block-Cursor
+      " set guicursor+=i:ver100-iCursor
+   endif
+
+"--terminal behavior
+   "Let vim know that my terminal has 256 colors:
+   set t_Co=256
+
+   "Convert colorschemes to 256
+   "  let g:CSApprox_loaded = 1
+
+   "attempt to fix background colors in vim
+   if &term =~ '256color'
+     " disable Background Color Erase (BCE) so that color schemes
+     " render properly when inside 256-color tmux and GNU screen.
+     " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+     set t_ut=
+   endif
+
+   if exists('$TMUX')
+      "tmux can now resize windows inside windows
+      set ttymouse=xterm2
+   endif
+"-----------------------------------------------------------------------"

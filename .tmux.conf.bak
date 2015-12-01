@@ -1,0 +1,89 @@
+# .tmux.conf
+
+#-------------------------------------------------------------------------------
+#  settings
+#
+# allow opening files on your mac from inside tmux
+# after brew install reattach-to-user-namespace
+set-option -g default-command "which reattach-to-user-namespace > /dev/null && reattach-to-user-namespace -l $SHELL || $SHELL"
+
+#tmux needs 256 colors
+set -g default-terminal "screen-256color"
+
+# Start numbering at 1
+#set -g base-index 1
+
+# Start with pane 1 
+#set -g pane-base-index 1
+
+# allow for faster key repetition (otherwise tmux waits for escape sequence)
+set -s escape-time 0
+
+#use zsh as default
+set-option -g default-shell /bin/zsh
+
+# Set status bar
+set -g status-bg black
+set -g status-fg white
+set -g status-left ""
+set -g status-right "#[fg=green]#H"
+
+#allow vim to still use FocusLost events
+set -g focus-events on
+
+# Activity monitoring
+#setw -g monitor-activity on
+#set -g visual-activity on
+
+#I like to use my mouse
+set -g mode-mouse on
+set -g mouse-select-pane on  #select pane
+set -g mouse-resize-pane on  #resize pane
+set -g terminal-overrides "xterm*:smcup@:rmcup@" #allow scrolling instead of paging
+
+#scroll back 10k lines
+set -g history-limit 10000
+
+#-------------------------------------------------------------------------------
+# window options 
+#
+#tmux allows <C- > type bindings in vim
+set-window-option -g xterm-keys on
+
+# Act more like vim:
+set-window-option -g mode-keys vi
+
+#tmux kill-session -t 0
+#-------------------------------------------------------------------------------
+#  key bindings
+#
+#move around windows using vim-type commands
+bind h select-pane -L #move left
+bind j select-pane -D #move down
+bind k select-pane -U #move up
+bind l select-pane -R #move right
+
+# C-b is not acceptable -- Vim uses it
+set-option -g prefix C-a
+unbind-key C-b
+
+# clear screen erases all buffers past entries (no over scrolling)
+bind -n C-l clear-history
+
+# alows us to use C-a a <command> to send commands to a 
+# TMUX session inside another TMUX session
+bind-key a send-prefix
+
+#unbind p
+#bind p paste-buffer
+
+#set 'v' to begin text selection, as in vim
+#bind-key -t vi-copy v begin-selection
+#bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+
+#update default binding of "enter" to also use copy-pipe
+#unbind -t vi-copy Enter
+#bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+
+#bind ']' to use pbpaste
+#bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"

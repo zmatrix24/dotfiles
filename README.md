@@ -12,3 +12,4 @@ In it you will find the following files
 .bash_profile.bak: a bash profile backup    
   
 To update the backup use the following alias: dotbak
+To git push use the following alias: autopush

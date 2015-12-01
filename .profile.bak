@@ -1,0 +1,96 @@
+#export PATH=/Users/user/scripts:$PATH
+#export PATH=/usr/local/bin/:$PATH
+#export PATH=/opt/local/bin:$PATH
+#export TEXINPUTS=$TEXINPUTS:/Users/user/github/latex/packages/
+#export PATH=/usr/local/ggobi/bin:/Library/Frameworks/GTK+.framework/Resources/bin:$PATH
+#export PKG_CONFIG_PATH=/usr/local/ggobi/lib/:/Library/Frameworks/GTK+.framework/Resources/lib/pkgconfig
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+   #show hidden files from the command line
+   alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; 
+                    killall Finder /System/Library/CoreServices/Finder.app'
+
+   #hide hidden files from the command line
+   alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; 
+                    killall Finder /System/Library/CoreServices/Finder.app'
+
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# back up vim dot files and dot folders so that they can be uploaded to github
+
+   #copy (cp) the vim dot stuff stored in the home dir to ~/github/dotfiles/
+   alias vimbak='cp ~/.vimrc ~/github/dotfiles/.vimrc.bak; 
+                 cp ~/.gvimrc ~/github/dotfiles/.gvimrc.bak'
+
+   #back up .bash_profile
+   alias bashbak='cp ~/.bash_profile ~/github/dotfiles/.bash_profile.bak;
+                  cp ~/.bashrc ~/github/dotfiles/.bashrc.bak;
+                  cp ~/.profile      ~/github/dotfiles/.profile.bak'
+
+   #back up tmux configuration
+   alias tmuxbak='cp ~/.tmux.conf ~/github/dotfiles/.tmux.conf.bak'
+
+   #backup zsh configuration
+   alias zshbak='cp ~/.zshrc ~/github/dotfiles/.zshrc.bak'
+
+   #backup dotfiles 
+   alias dotbak='vimbak; bashbak; tmuxbak; zshbak'
+
+
+   alias autopush='git add .;
+                   git commit -m "Automatic commit while editing";
+                   git push -u origin master'
+
+# clean up latex results
+function texclean() {
+  if [ "$1" ~= "all" ]
+  then
+     rm -f *.{aux,log,out,tex,pdf}
+  else
+     rm *.{aux,log,out}
+  fi
+}
+
+# Tell ls to be colorful
+# Enable coloring in terminal
+# http://www.norbauer.comrails-consulting/notes/ls-colors-and-terminal-app.html
+#-G color, -p adds a '/' to directory
+alias ls='ls -Gp'
+export CLICOLOR=1
+export LSCOLORS="cxBxBxBxHxBxBxbxbxcxcx"
+
+#make tmux colors work with vim
+#alias tmux="TERM=screen-256color-bce tmux"
+
+# the grep command should have color
+export GREP_OPTIONS='--color=auto'
+
+#allow vim-r-plugin to open vim console in same tmux window
+alias vim="vim --servername VIM"
+
+#never let R ask if you want to save workspace
+#alias R='R --no-save'
+
+#R always wants to do this
+if [ "x$DISPLAY" = "x" ]
+then
+   if [[ "screen" = "$TERM" ]]
+   then
+      export TERM=screen-256color
+   else
+      export TERM=xterm-256color
+   fi
+   alias vim="vim --servername VIM"
+fi
+
+#I usually try to split open files in vim from the command line
+alias sp="vim --servername VIM"
+
+#I will never spell correctly, these are harmless
+alias claer=clear
+alias celar=clear
+
+

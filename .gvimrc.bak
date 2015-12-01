@@ -1,0 +1,303 @@
+"--------------------------------------**--------------------------------------#
+"  File Name: /Users/user/.gvimrc
+"  Purpose: The .vimrc file loads at when vim is activated. 
+"
+"  Creation Date: 14-05-2012
+"  Last Modified: Wed May 16 23:03:14 2012
+"  Created By: Ian Mouzon <imouzon@iastate.edu>
+"--------------------------------------**--------------------------------------#
+"
+"use vim settings not vi settings
+   set nocompatible
+"look for filetype, find plugins for filetype
+   filetype on
+
+"REQUIRED for vimlatex, others. 
+"This makes vim invoke Latex-Suite when you open a tex file.
+   filetype plugin on
+   filetype indent on
+
+"Add syntax files for certain types of code
+   syntax enable
+
+"Automatically enable mouse usage
+   set mouse=a
+
+"Move Cursor past last character
+   set virtualedit=onemore
+
+"Abbreviate messages to avoid hitting 'ENTER'
+   set shortmess+=filmnrxoOtT
+
+"Spell checking ON
+   set spell
+
+"Increase command history
+   set history=400
+
+"Add column numbers
+   set number
+
+"Move swap files:
+   set directory=~/.vim/swapfiles
+   set backupdir=~/.vim/rbfiles
+   
+"Display current mode
+   set showmode
+"Show partial commands in status line and selected characters/lines in visual mode
+   set showcmd
+
+"dispay column and row position of cursor
+    set ruler
+    set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) 
+
+"Change leader from '\' to ','
+"  let mapleader = ','
+
+"Make so that ';' works just like ':'
+   nnoremap ; :
+"User interface options
+    if has('statusline')
+        set laststatus=2
+
+        " Broken down into easily includeable segments
+        set statusline=%<%f\   " Filename
+        set statusline+=%w%h%m%r " Options
+        set statusline+=\ [%{&ff}/%Y]            " filetype
+        set statusline+=\ [%{getcwd()}]          " current dir
+        "set statusline+=\ [A=\%03.3b/H=\%02.2B] " ASCII / Hexadecimal value of char
+        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    endif
+    set linespace=0                 " No extra spaces between rows
+    set winminheight=0              " windows can be 0 line high 
+    set ignorecase                  " case insensitive search
+    set smartcase                   " case sensitive when uc present
+    set wildmenu                    " show list instead of just completing
+    set wildmode=list:longest,full  " command <Tab> completion, list matches, then longest common part, then all.
+    set scrolljump=5                " lines to scroll when cursor leaves screen
+    set foldenable                  " auto fold code
+
+"Let vim know that my terminal has 256 colors:
+   set t_Co=256
+   set t_AB=^[[48;5;%dm
+   set t_AF=^[[38;5;%dm
+
+"Convert colorschemes to 256
+"   let g:CSApprox_loaded = 1
+
+"Add Tmux sreen splitting for vimr!   
+   let vimrplugin_tmux = 1
+   let vimrplugin_screenvsplit = 0
+   let g:ScreenImpl = 'Tmux'
+
+"Add autocorrect for commonly misspelled words
+"   source ~/.vim/autocorrect/autocorrect.vim
+"Add abolish to code
+"   source ~/.vim/plugin/abolish.vim
+
+"TAGS:
+       "To use cTags (TlistToggle) we need this location:
+          let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+       "We close the window if the taglist is the only thing open 
+       "by changing this to 0:
+          let Tlist_Exit_OnlyWindow = 1
+       "Show the tag scope next to the tag:
+          let Tlist_Display_Tag_Scope = 0
+       "sort tags by order not name
+          let Tlist_Sort_Type='order'
+       "Bind F4 to toggle on Tlist
+          nnoremap <F4> :TlistToggle<CR>
+       "switch side Tlist appears on left
+          "let Tlist_Use_Right_Window=1
+       
+       "update tags for files like C
+       function! UPDATE_TAGS()
+          let _f_ = expand("%:p")
+          let _cmd_ = '"ctags -a -f /dvr/tags --c++-kinds=+p --fields=+iaS --extra=+q " ' . '"' . _f_ . '"'
+          let _resp = system(_cmd_)
+          unlet _cmd_
+          unlet _f_
+          unlet _resp
+       endfunction
+       autocmd BufWritePost *.cpp,*.h,*.c call UPDATE_TAGS()
+       
+       "Took a whole afternoon to do but tags for R
+          autocmd FileType r set tags+=~/.vim/RTAGS,~/.vim/RsrcTags
+          autocmd FileType rnoweb set tags+=~/.vim/RTAGS,~/.vim/RsrcTags
+
+"To use vim_r_plugin send this to R
+"     install.packages(c('vimcom', 'colorout', 'setwidth'))
+
+"indent 3 spaces like I was taught in intro to C, 4 spaces is for rich people
+    set shiftwidth=3
+"tabs only give 3 spaces
+    set tabstop=3
+"I said spaces, not some \t thing
+    set expandtab
+"make sets of 3 spaces together work like four tabs
+    set softtabstop=3
+"Smart indent 
+    set autoindent
+    set smartindent
+"Search highlights terms
+    set hlsearch
+    set incsearch
+    set showmatch
+"I hate wrapping text
+    set nowrap
+
+" Easier moving in tabs and windows
+    map <C-J> <C-W>j<C-W>_
+    map <C-K> <C-W>k<C-W>_
+    map <C-L> <C-W>l<C-W>_
+    map <C-H> <C-W>h<C-W>_
+    map <C-K> <C-W>k<C-W>_
+
+"Yank from the cursor to the end of the line, to be consistent with C and D.
+    nnoremap Y y$
+     
+"latex in nonstop mode!
+   let g:Tex_CompileRule_pdf = 'pdflatex -interaction nonstopmode $*'
+"switch to directory of current file with CD
+    command! CD cd %:p:h
+
+"Headers for R, FORTRAN, SAS, C, JAVA, LISP, TeX files, CSS
+   "so ~/.vim/headersandstamps.vim
+
+"so twitvimlogin.vim
+
+"--FORTRAN and C in R-----------------------------------------------------------
+   command! GiveR !R CMD SHLIB %
+   command! AddR !echo "dyn.load('~/fortran/%')" >> ~/R/.FORTRAN.shlib; perl -pi -e 's/\.for|\.f|\.FOR|\.F|\.c|\.C/\.so/g' ~/R/.FORTRAN.shlib; 
+"-------------------------------------------------------------------------------
+
+"--FORTRAN----------------------------------------------------------------------
+   "au BufNewFile, BufRead *.f,*.for setf fortran
+   "let do_syntax_sel_menu = 1|runtime! synmenu.vim|aunmenu &Syntax.&Show\ filetypes\ in\ menu
+   "set fortran_do_enddo=1
+   set foldmethod=syntax
+   let fortran_fold=1
+   let fortran_fold_conditionals=1
+   let fortran_fold_mulilinecomments=1
+   "fortran_codecomplete.vim is giving terminal vi problems
+   "so ~/.vim/ftplugin/fortran_codecomplete.vim
+   "so ~/.vim/ftplugin/fortran_stubs.vim
+   "autocmd FileType python set omnifunc=pythoncomplete#Complete
+"-------------------------------------------------------------------------------
+
+"-------------------------------vim latex stuff---------------------------------
+   " IMPORTANT: New packages are best stored in the following:
+   "
+   "   /opt/local/share/texmf-texlive-dist/tex/latex/
+   "
+   "   with a sudo command to put them threre. Once packages have been
+   "   installed, then it is necessary to run texhash so that tex can find
+   "   them.
+   "
+   "   Show all files searched by TeX: r !kpsepath tex | tr : '\n'
+   "
+   "   Directories with !! in front are not searched by TeX on start up
+   "   (possibly because of permissions? I don't know.) This leads to the
+   "   
+   "
+   " IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+   " can be called correctly.
+   
+   " IMPORTANT: grep will sometimes skip displaying the file name if you
+   " search in a singe file. This will confuse Latex-Suite. Set your grep
+   " program to always generate a file-name.
+     set grepprg=grep\ -nH\ $*
+   
+   " OPTIONAL: This enables automatic indentation as you type.
+     filetype indent on
+   
+   " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults 
+   " to 'plaintex' instead of 'tex', which results in vim-latex not being 
+   " loaded.
+   " The following changes the default filetype back to 'tex':
+     let g:tex_flavor='latex'
+   " This is the folder where files are searched in vim.
+   " NOTE: This is where vim will search for custom packages.
+     let g:Tex_TEXINPUTS='/opt/local/texlive/2011/texmf-dist/tex/latex/'
+   
+   "No DVI viewer, set default output to pdf
+     let g:Tex_DefaultTargetFormat ='pdf'
+"-------------------------------------------------------------------------------
+
+"Remap keys for R: now send commands with space bar!
+"vmap <Space> <Plug>RdSendSelection
+"nmap <Space> <Plug>RDSendLine
+
+fun! UseConqueForThisFile()
+"Conque Settings for vimR:
+   let vimrplugin_ca_ck = 0
+   let vimrplugin_applescript = 0
+   let vimrplugin_screenplugin = 0
+   let vimrplugin_conqueplugin = 1
+  
+"Make the windows split vertically
+   "let vimrplugin_conquevsplit = 1
+   let ConqueTerm_CWInsert = 1
+   let ConqueTerm_Color = 0
+   let ConqueTerm_ReadUnfocused = 1
+"Change the waiting time to increase the chance of output being 
+"show right away (bigger time = better apparently)
+   let vimrplugin_conquesleep = 100
+"The use of |ConqueTerm_ReadUnfocused| will set the value of 'updatetime'
+"to 1000 milliseconds.
+"let vimrplugin_conquesleep = 1
+   nmap <F5> :call RScrollTerm()<CR>
+endfun
+
+"AppleScript syntax
+au BufRead,BufNewFile *.scrp,*.as set filetype=applescript
+au! Syntax applescript source ~/.vim/applescript.vim
+
+"Set ColorTheme for Dark and Light
+"so ~/.vim/.vimrcCOLOR
+
+"Cursor
+highlight Cursor guifg=black guibg=white
+highlight iCursor guifg=pink guibg=white
+
+function! s:transpose()
+    let maxcol = 0
+    let lines = getline(1, line('$'))
+
+    for line in lines
+        let len = len(line)
+        if len > maxcol 
+            let maxcol = len
+        endif
+    endfor
+
+    let newlines = []
+    for col in range(0, maxcol - 1)
+        let newline = ''
+        for line in lines
+            let line_with_extra_spaces = printf('%-'.maxcol.'s', line)
+            let newline .= line_with_extra_spaces[col]
+        endfor
+        call add(newlines, newline)
+    endfor
+
+    1,$"_d
+    call setline(1, newlines)
+endfunction
+
+command! TransposeBuffer call s:transpose()
+
+"CTRL-A goes to the end of the line while typing:
+   "imap <C-a> <esc>$i<right>
+"CTRL-C to copy (visual mode)
+"  vnomap <C-C> y
+"CTRL-X to cut (visual mode)
+"  vnomap <C-X> x
+"CTRL-V to paste (insert mode)
+"  inomap <C-V> <esc>P
+
+"remap <Leader><Tab> to ` for easier completion in VimLaTeX
+"   inoremap <Leader><Tab>  `
+
+set transparency=10
+
