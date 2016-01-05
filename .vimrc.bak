@@ -471,6 +471,8 @@
    inoremap <C-c> y\$
    nnoremap <C-c> y\$
 
+   
+
    "CTRL-X to cut (visual mode)
    vnoremap <C-X> x
    
