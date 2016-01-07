@@ -1,0 +1,41 @@
+#--------------------------------------**--------------------------------------#
+#  File Name: .Rprofile
+#  Purpose: Script runs when R is initially called
+#
+#  Creation Date: 05-02-2015
+#  Last Modified: Wed Jan  6 19:24:35 2016
+#  Created By: Ian Mouzon
+#
+#--------------------------------------**--------------------------------------#
+#
+#  FORTRAN and C: 
+#  source('~/R/shlib/C_FORTRAN.shlib.r')
+#  .Fortran("subroutine name",as.integer(input1),as.double(input2), etc)
+#
+
+#vim-r-plugin setup 
+#      http://www.lepem.ufc.br/jaa/r-plugin.html#r-plugin-features
+if(interactive()){
+   #devtools::install_github("jalvesaq/colorout")
+   library(colorout) #terminal output is colorized
+   library(setwidth) #automatically resize terminal on pane change
+
+   #devtools::install_github("jalvesaq/VimCom")
+   #system("git clone https://github.com/jalvesaq/VimCom.git ~/R/vimcom/")
+   #install.packages("~/R/vimcom/", type="source", repos=NULL, configure.args= "--enable-clientserver")
+   options(vimcom.verbose = 1)
+   library(vimcom)
+
+   #add these packages to the defaultPackage option
+   #options(defaultPackages=c(getOption('defaultPackages'),'colorout','setwidth','vimcom'))
+   if(Sys.getenv("TMUX") != "" && Sys.getenv("DISPLAY") == ""){
+      options(browser = function(u) system(paste0("tmux new-window 'w3m ", u, "'")))
+   }
+
+   setHook(packageEvent("grDevices", "onLoad"),
+        function(...) grDevices::quartz.options(width = 6, height = 6,
+                                                pointsize = 10))
+}
+
+
+
