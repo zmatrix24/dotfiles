@@ -84,6 +84,10 @@
    Plugin 'majutsushi/tagbar'
    Plugin 'kien/ctrlp.vim'
 
+
+   Plugin 'vim-pandoc/vim-pandoc'
+   Plugin 'vim-pandoc/vim-pandoc-syntax'
+
    call vundle#end()
 
    "Bundle 'EricGebhart/SAS-vim'
@@ -143,14 +147,16 @@
    let rrst_syn_hl_chunk = 1
    let rmd_syn_hl_chunk = 1
 
+ 
+   
    "add the same behavior to python, julia, haskell, ruby, lisp
    runtime r-plugin/global_r_plugin.vim
 
-   "vmap <Space> <Plug>RDSendSelection
+   vmap <Space> <Plug>RESendSelection
    "nmap <Space> <Plug>RDSendLine
    "nmap <LocalLeader>c <Plug>RToggleComment
-   "vmap <LocalLeader>c <Plug>RToggleComment
-   "map <LocalLeader>nr :call RAction("rownames")<CR>
+   vmap c <Plug>RToggleComment
+    "map <LocalLeader>nr :call RAction("rownames")<CR>
    "map <LocalLeader>nc :call RAction("colnames")<CR>
    map <LocalLeader>nn :call RAction("names")<CR>
    "map <LocalLeader>nD :call RAction("dimnames")<CR>
@@ -158,7 +164,7 @@
    map <LocalLeader>nh :call RAction("head")<CR>
    "map <LocalLeader>nt :call RAction("tail")<CR>
    "map <LocalLeader>nl :call RAction("length")<CR>
-   "map <LocalLeader>ns :call RAction("str")<CR>
+   map <LocalLeader>ns :call RAction("str")<CR>
    "map <LocalLeader>nC :call RAction("class")<CR>
    "map <LocalLeader>nm :call RAction("mode")<CR>
    map <LocalLeader>nw :call SendCmdToR("system('clear')")<CR>
@@ -166,7 +172,7 @@
    "map <LocalLeader>sb :call SendCmdToR("system.time({")<CR>
    "map <LocalLeader>se :call SendCmdToR("})")<CR>
    "map <LocalLeader>tt :call SendCmdToR("tt = ")<CR>
-   map <LocalLeader>rm :call SendCmdToR("rm(list=ls())")<CR>
+   "map <LocalLeader>rm :call SendCmdToR("rm(list=ls())")<CR>
    "map <LocalLeader>ls :call SendCmdToR("ls()")<CR>
    "map <LocalLeader>qy :call SendCmdToR("q(save = 'yes')")<CR>
    "map <LocalLeader>qn :call SendCmdToR("q(save = 'no')")<CR>
@@ -294,6 +300,14 @@
    
 
 "--R
+  " nmap <F4> <Plug>RMakePDF
+  " nmap <F5> <Plug>RMakePDFK
+  " nmap <F6> <Plug>RMakePDFKb
+  " nmap <F7> <Plug>RBibTeX
+  " nmap <F8> <Plug>RBibTeXK
+
+
+
    command! KnitHTML !R --no-save --no-restore -e "require(knitr); knit2html('%')"
    command! KnitMD !R --no-save --no-restore -e "setwd(\""%:p:h"\"); rmarkdown::render('%')";
 
@@ -466,12 +480,30 @@
    "Yank from the cursor to the end of the line
    nnoremap Y y\$      
 
-   "CTRL-C to copy (visual mode)
+
+  "CTRL-C to copy (visual mode)
    vnoremap <C-c> y 
    inoremap <C-c> y\$
    nnoremap <C-c> y\$
 
-   
+
+
+
+
+
+""""" 
+   "copy to clipboard
+   nnoremap <C-v> :r !pbpaste<CR><CR>
+
+   nnoremap <F1> :.w !pbcopy<CR><CR> 
+   vnoremap <F1> : w !pbcopy<CR><CR>
+   "nnoremap <F2> "+y
+   "vnoremap <F4> "+y
+   "vnoremap <F5> "*y
+""""""
+
+
+
 
    "CTRL-X to cut (visual mode)
    vnoremap <C-X> x

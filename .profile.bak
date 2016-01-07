@@ -36,8 +36,11 @@
    #backup zsh configuration
    alias zshbak='cp ~/.zshrc ~/github/dotfiles/.zshrc.bak'
 
+   #backup Rprofile
+   alias rprofilebak='cp ~/.Rprofile ~/github/dotfiles/.Rprofile.bak'
+
    #backup dotfiles 
-   alias dotbak='vimbak; bashbak; tmuxbak; zshbak'
+   alias dotbak='vimbak; bashbak; tmuxbak; zshbak; rprofilebak'
 
 
    alias autopush='git add .;
@@ -90,7 +93,9 @@ fi
 alias sp="vim --servername VIM"
 
 #I will never spell correctly, these are harmless
+alias cl=clear
 alias claer=clear
-alias celar=clear
+#alias celar=clear
+#alias cle= clear
 
 
