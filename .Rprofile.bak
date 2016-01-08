@@ -3,7 +3,7 @@
 #  Purpose: Script runs when R is initially called
 #
 #  Creation Date: 05-02-2015
-#  Last Modified: Wed Jan  6 19:24:35 2016
+#  Last Modified: Wed Jan  6 23:09:12 2016
 #  Created By: Ian Mouzon
 #
 #--------------------------------------**--------------------------------------#
@@ -17,6 +17,14 @@
 #      http://www.lepem.ufc.br/jaa/r-plugin.html#r-plugin-features
 if(interactive()){
    #devtools::install_github("jalvesaq/colorout")
+
+   
+   setHook(packageEvent("grDevices", "onLoad"),
+        function(...) grDevices::quartz.options(width = 6, 
+                                                height = 6, 
+                                                pointsize = 10))
+   
+   
    library(colorout) #terminal output is colorized
    library(setwidth) #automatically resize terminal on pane change
 
@@ -31,11 +39,4 @@ if(interactive()){
    if(Sys.getenv("TMUX") != "" && Sys.getenv("DISPLAY") == ""){
       options(browser = function(u) system(paste0("tmux new-window 'w3m ", u, "'")))
    }
-
-   setHook(packageEvent("grDevices", "onLoad"),
-        function(...) grDevices::quartz.options(width = 6, height = 6,
-                                                pointsize = 10))
 }
-
-
-

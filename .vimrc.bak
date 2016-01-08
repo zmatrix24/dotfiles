@@ -143,11 +143,22 @@
    "vmap <Space> <Plug>RdSendSelection
    "nmap <Space> <Plug>RDSendLine
 
+   
+ 
+   
    "add code highlighting to chunk headers
    let rrst_syn_hl_chunk = 1
    let rmd_syn_hl_chunk = 1
 
- 
+
+
+"""" add the following to fix vim-pandoc work right for highlights for rmd
+   " configuration for vim-pandoc and vim-rmarkdown
+   let g:pandoc#modules#disabled = ["folding", "spell"]
+   let g:pandoc#syntax#conceal#use = 0
+""""""
+
+
    
    "add the same behavior to python, julia, haskell, ruby, lisp
    runtime r-plugin/global_r_plugin.vim
@@ -482,21 +493,31 @@
 
 
   "CTRL-C to copy (visual mode)
-   vnoremap <C-c> y 
-   inoremap <C-c> y\$
+   vnoremap <C-c> Y   " this one does not work, why
+   inoremap <C-c> <esc>y\$
    nnoremap <C-c> y\$
 
 
-
+"""" custom use
+   inoremap ;; <esc> 
+   vnoremap ;; <esc> 
+   nnoremap qq :q!<CR>
+   vnoremap qq :q!<CR>
+"""
 
 
 
 """"" 
    "copy to clipboard
+   "copy one line
+   nnoremap <F2> :.w !pbcopy<CR><CR> 
+   "nnoremap <D-c> :.w !pbcopy<CR><CR>   "cannot map D in vim, work in macvim
+   "copy selected
+   vnoremap <F2>  : w !pbcopy<CR><CR>    "default F1 open vim help file
+   "paste 
    nnoremap <C-v> :r !pbpaste<CR><CR>
+   inoremap <C-v> <esc>:r !pbpaste<CR><CR>
 
-   nnoremap <F1> :.w !pbcopy<CR><CR> 
-   vnoremap <F1> : w !pbcopy<CR><CR>
    "nnoremap <F2> "+y
    "vnoremap <F4> "+y
    "vnoremap <F5> "*y
