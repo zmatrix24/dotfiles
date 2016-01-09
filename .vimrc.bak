@@ -163,7 +163,7 @@
    "add the same behavior to python, julia, haskell, ruby, lisp
    runtime r-plugin/global_r_plugin.vim
 
-   vmap <Space> <Plug>RESendSelection
+   "vmap <Space> <Plug>RESendSelection
    "nmap <Space> <Plug>RDSendLine
    "nmap <LocalLeader>c <Plug>RToggleComment
    vmap c <Plug>RToggleComment
@@ -499,6 +499,13 @@
 
 
 """" custom use
+   imap \\ <esc><Plug>RDSendLinei
+   "nnoremap <Space> <Plug>RDSendLine
+"   inoremap \\ <esc><Plug>RDSendLine
+ "  nnoremap <Space> <Plug>RDSendLine
+
+   vmap <Space> <Plug>RESendSelection
+   nmap <Space> <Plug>RDSendLine
    inoremap ;; <esc> 
    vnoremap ;; <esc> 
    nnoremap qq :q!<CR>
